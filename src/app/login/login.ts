@@ -30,7 +30,6 @@ export class Login {
     if(this.hardcodedAuthentication.authenticate(this.username, this.password)){
       // redirect to welcome page
       this.router.navigate(['welcome',this.username])
-      this.invalidLogin = false
     }
     else{
       this.invalidLogin = true

@@ -1,27 +1,30 @@
-import { Service } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
-@Service()
+@Injectable({
+  providedIn: 'root'
+})
 export class HardcodedAuthentication {
 
-    authenticate(username: string, password: string){
-        // console.log("before " + this.isUserLoggedIn());
-        if(username==="in28minutes" && password === 'dummy'){
-            sessionStorage.setItem('authenticatedUser', username);
-            // console.log("After " + this.isUserLoggedIn);
-            return true;
-        }
-        return false;
-    }
+  // Broadcasts login state changes instantly
+  public isUserLoggedInSubject = new BehaviorSubject<boolean>(this.isUserLoggedIn());
 
-    isUserLoggedIn(){
-        let user = sessionStorage.getItem('authenticatedUser')
-        return !(user === null)
-    }
-    logout(){
-        sessionStorage.removeItem('authenticatedUser');
-    }
+  isUserLoggedIn(): boolean {
+    let user = sessionStorage.getItem('authenticaterUser');
+    return !(user === null);
+  }
 
-    getAuthenticatedUser(): string | null {
-    return sessionStorage.getItem('authenticatedUser');
+  authenticate(username: string, password: string) {
+    if (username === 'in28minutes' && password === 'dummy') {
+      sessionStorage.setItem('authenticaterUser', username);
+      this.isUserLoggedInSubject.next(true); // <--- Notify subscribers
+      return true;
+    }
+    return false;
+  }
+
+  logout() {
+    sessionStorage.removeItem('authenticaterUser');
+    this.isUserLoggedInSubject.next(false); // <--- Notify subscribers
   }
 }
