@@ -60,4 +60,15 @@ export class TodoList implements OnInit {
       }
     )
   }
+
+  deleteTodo(id: number) {
+    console.log(`Delete todo ${id}`);
+    this.todoService.deleteTodo("in28mintes", id).subscribe(
+      response => {
+        console.log(response);
+        this.message = `Delete of todo ${id} Successful!`;
+        this.refreshTodos();
+      }
+    )
+  }
 }

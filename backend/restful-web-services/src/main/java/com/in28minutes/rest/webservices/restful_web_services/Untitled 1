@@ -1,0 +1,7 @@
+retrieve all todos - users/{username}/todos
+
+delete a todo - users/{username}/todos/{id}
+
+update - users/{username}/todos/{id}
+
+create new todo - users/{username}/todos
