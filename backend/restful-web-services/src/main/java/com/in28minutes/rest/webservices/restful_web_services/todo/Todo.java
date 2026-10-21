@@ -3,13 +3,19 @@ package com.in28minutes.rest.webservices.restful_web_services.todo;
 import java.util.Date;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Todo {
 
 	private long id;
 	private String username;
 	private String description;
 	private Date targetDate;
+	@JsonProperty("done")
 	private boolean isDone;
+
+	protected Todo() {
+	}
 
 	public Todo(long id, String username, String description, Date targetDate, boolean isDone) {
 		super();

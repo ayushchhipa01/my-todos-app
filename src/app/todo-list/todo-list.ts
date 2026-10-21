@@ -27,20 +27,6 @@ export class TodoList implements OnInit {
 
   message: string = '';
 
-  // = [
-  //   new Todo(1, 'Learn to Dance', false, new Date()),
-  //   new Todo(2, 'Become an Expert at Angular', false, new Date()),
-  //   new Todo(3, 'Visit India', false, new Date())
-  //   // {id : 1, description : },
-  //   // {id : 2, description : ''},
-  //   // {id : 3, description : 'Visit India'}
-  // ]
-
-  // todo = {
-  //     id : 1,
-  //     description: 'Learn to Dance'
-  // }
-
   constructor(
     private todoService: TodoData,
     private router: Router,
@@ -54,7 +40,6 @@ export class TodoList implements OnInit {
   refreshTodos() {
     this.todoService.retreiveAllTodos('in28minutes').subscribe(
       response => {
-        console.log(response);
         this.todos = response;
         this.cdr.detectChanges(); // Force UI to refresh immediately after data is fetched
       }
@@ -70,5 +55,14 @@ export class TodoList implements OnInit {
         this.refreshTodos();
       }
     )
+  }
+
+  updateTodo(id: number) {
+    // console.log(`Update todo ${id}`);
+    this.router.navigate(["todos", id]);
+}
+
+  addTodo() {
+        this.router.navigate(["todos", -1]);
   }
 }
