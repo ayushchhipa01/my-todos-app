@@ -27,7 +27,7 @@ export class TodoData {
 
     createTodo(username: string, todo: Todo) {
         return this.http.post(
-            `http://localhost:8080/users/${username}/todos/`
+            `http://localhost:8080/users/${username}/todos`
             , todo)
         }
 }
