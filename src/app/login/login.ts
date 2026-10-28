@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { HardcodedAuthentication } from '../service/hardcoded-authentication';
+import { BasicAuthentication } from '../service/basic-authentication';
 
 
 @Component({
@@ -21,7 +22,9 @@ export class Login {
   // router 
   // dependency injection
   constructor(private router: Router,
-     private hardcodedAuthentication: HardcodedAuthentication){}
+     private hardcodedAuthentication: HardcodedAuthentication,
+    private basicAuthentication: BasicAuthentication
+    ){}
 
 
   handleLogin(){
@@ -35,6 +38,24 @@ export class Login {
       this.invalidLogin = true
     }
 
+  }
+
+  handleBasicAuthLogin(){
+    // console.log(this.username);
+    // console.log(this.password);
+    this.basicAuthentication.executeAuthenticationService(this.username, this.password)
+
+      .subscribe(
+        data => {
+          console.log(data)
+          this.router.navigate(['welcome',this.username])
+          this.invalidLogin = false
+        },
+        error => {
+          console.log(error)
+          this.invalidLogin = true
+        }
+      )
   }
 
 }
