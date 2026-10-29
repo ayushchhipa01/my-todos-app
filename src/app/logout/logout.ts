@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HardcodedAuthentication } from '../service/hardcoded-authentication';
+import { BasicAuthentication } from '../service/basic-authentication';
 
 @Component({
   imports: [],
@@ -9,11 +10,13 @@ import { HardcodedAuthentication } from '../service/hardcoded-authentication';
 })
 export class Logout {
 
-  constructor(private hardcodedAuthentication : HardcodedAuthentication){
+  constructor(//private hardcodedAuthentication : HardcodedAuthentication,
+    private basicAuthentication : BasicAuthentication
+  ){
 
   }
 
   ngOnInit(){
-    this.hardcodedAuthentication.logout();
+    this.basicAuthentication.logout();
   }
 }

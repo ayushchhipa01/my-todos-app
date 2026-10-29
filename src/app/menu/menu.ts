@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { HardcodedAuthentication } from '../service/hardcoded-authentication';
 import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { BasicAuthentication } from '../service/basic-authentication';
 
 @Component({
   selector: 'app-menu',
@@ -15,7 +16,8 @@ export class Menu implements OnInit {
   isLoggedIn: boolean = false;
   private cdr = inject(ChangeDetectorRef);
 
-  constructor(public hardcodedAuthentication: HardcodedAuthentication,
+  constructor(//public hardcodedAuthentication: HardcodedAuthentication
+    private basicAuthentication: BasicAuthentication
     
   ) { }
 
@@ -25,10 +27,10 @@ export class Menu implements OnInit {
 
   refreshMenu() {
     // 1. Set initial state when component loads
-    this.isLoggedIn = this.hardcodedAuthentication.isUserLoggedIn();
+    this.isLoggedIn = this.basicAuthentication.isUserLoggedIn();
 
     // 2. Listen to live updates from the BehaviorSubject
-    this.hardcodedAuthentication.isUserLoggedInSubject.asObservable().subscribe(
+    this.basicAuthentication.isUserLoggedInSubject.asObservable().subscribe(
       status => {
         this.isLoggedIn = status;
         this.cdr.detectChanges(); // Force UI to refresh immediately after status change

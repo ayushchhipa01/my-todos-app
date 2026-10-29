@@ -1,6 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
+import { API_URL } from '../app.constants';
+
+export const TOKEN = "token";
+export const AUTHENTICATED_USER = "authenticaterUser";
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +18,23 @@ export class BasicAuthentication {
   // Broadcasts login state changes instantly
   public isUserLoggedInSubject = new BehaviorSubject<boolean>(this.isUserLoggedIn());
 
+  getAuthenticatedUser() {
+    return sessionStorage.getItem(AUTHENTICATED_USER);
+  }  
+  
+  getAuthenticatedToken() {
+    if (this.getAuthenticatedUser())
+      return sessionStorage.getItem(TOKEN);
+
+    return null;
+  }
+
+
   isUserLoggedIn(): boolean {
-    let user = sessionStorage.getItem('authenticaterUser');
+    let user = sessionStorage.getItem(AUTHENTICATED_USER);
     return !(user === null);
   }
 
-  authenticate(username: string, password: string) {
-    if (username === 'in28minutes' && password === 'dummy') {
-      sessionStorage.setItem('authenticaterUser', username);
-      this.isUserLoggedInSubject.next(true); // <--- Notify subscribers
-      return true;
-    }
-    return false;
-  }
 
   executeAuthenticationService(username: string, password: string) {
 
@@ -37,11 +45,13 @@ export class BasicAuthentication {
         })
 
       return this.http.get<AuthenticationBean>(
-        `http://localhost:8080/basic-auth`,
+        `${API_URL}/basic-auth`,
         {headers}).pipe(
           map(
             data => {
-              sessionStorage.setItem('authenticaterUser', username);
+              sessionStorage.setItem(AUTHENTICATED_USER, username);
+              sessionStorage.setItem(TOKEN, basicAuthHeaderString);
+              this.isUserLoggedInSubject.next(true);
               return data;
             }
           )
@@ -51,8 +61,9 @@ export class BasicAuthentication {
 
 
   logout() {
-    sessionStorage.removeItem('authenticaterUser');
-    this.isUserLoggedInSubject.next(false); // <--- Notify subscribers
+    sessionStorage.removeItem(AUTHENTICATED_USER);
+    sessionStorage.removeItem(TOKEN);
+    this.isUserLoggedInSubject.next(false);
   }
 
 }

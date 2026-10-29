@@ -8,6 +8,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
-    // { provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterBasicAuth, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterBasicAuth, multi: true },
   ]
 };
