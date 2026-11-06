@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
@@ -23,7 +23,8 @@ export class Login {
   // dependency injection
   constructor(private router: Router,
      private hardcodedAuthentication: HardcodedAuthentication,
-    private basicAuthentication: BasicAuthentication
+    private basicAuthentication: BasicAuthentication,
+    private cdr: ChangeDetectorRef
     ){}
 
 
@@ -37,6 +38,7 @@ export class Login {
     else{
       this.invalidLogin = true
     }
+    this.cdr.detectChanges();
 
   }
 
@@ -56,6 +58,24 @@ export class Login {
           this.invalidLogin = true
         }
       )
+  }
+
+  handleJWTAuthLogin(){
+    
+    this.basicAuthentication.executeJWTAuthenticationService(this.username, this.password)
+
+      .subscribe(
+        data => {
+          console.log(data)
+          this.router.navigate(['welcome',this.username])
+          this.invalidLogin = false
+        },
+        error => {
+          console.log(error)
+          this.invalidLogin = true
+        }
+      )
+      this.cdr.detectChanges();
   }
 
 }
