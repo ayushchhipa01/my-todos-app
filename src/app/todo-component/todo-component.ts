@@ -12,7 +12,7 @@ import { DatePipe, NgIf } from '@angular/common';
   templateUrl: './todo-component.html',
 })
 export class TodoComponent {
-  id: number = 0;
+  id = 0;
   todo: Todo = new Todo(this.id, "", false, new Date());
 
   constructor(
